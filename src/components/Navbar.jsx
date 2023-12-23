@@ -1,136 +1,74 @@
+// Navbar.jsx
 import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Navbar.css";
 
-
-export const NavBar = ({ token, setToken, staff }) => {
+export const NavBar = ({ currentUser, setCurrentUser }) => {
   const navigate = useNavigate();
   const navbar = useRef();
-  const hamburger = useRef();
-
-  const showMobileNavbar = () => {
-    hamburger.current.classList.toggle("is-active");
-    navbar.current.classList.toggle("is-active");
-  };
 
   const userLink = () => {
-    if (token && staff) {
+    if (currentUser && currentUser.rare_user.is_contractor === true) {
+      // Contractor Navbar
       return (
-        <Link to="/users/all" className="navbar-item">
-          User Manager
-        </Link>
+        <>
+          <Link to="/my-buildos" className="navbar-item hover:text-white">
+            My Buildos
+          </Link>
+        </>
       );
-    } else if (token) {
+    } else if (currentUser) {
+      // Customer Navbar
       return (
-        <Link to="/users/all" className="navbar-item">
-          Users
-        </Link>
+        <>
+          <Link to="/my-buildos" className="navbar-item hover:text-white">
+            My Buildos
+          </Link>
+          <Link to="/available-contractors" className="navbar-item hover:text-white">
+          Available Contractors
+          </Link>
+        </>
       );
     } else {
-      return "";
+      return null;
     }
   };
 
   return (
     <nav
-      className="navbar is-success mb-3"
+      className="flex items-center justify-between bg-gradient-to-b from-orange-500 p-2 opacity-97 rounded-lg"
       role="navigation"
-      aria-label="main navigation"
     >
       <div className="navbar-brand">
-        <a className="navbar-item" href={token ? "/" : "/login"}>
-          <h1 className="title is-4">Rare Publishing</h1>
-        </a>
-
-        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        <a
-          role="button"
-          className="navbar-burger"
-          aria-label="menu"
-          aria-expanded="false"
-          data-target="navbarBasicExample"
-          onClick={showMobileNavbar}
-          ref={hamburger}
-        >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
+        <Link to="/" className="navbar-item">
+          <h1 className="title text-4xl  hover:text-white font-bold">Buildos</h1>
+        </Link>
       </div>
 
-      <div className="navbar-menu" ref={navbar}>
-        <div className="navbar-start">
-          {token ? (
-            <Link to="/posts/all" className="navbar-item">
-              All Posts
-            </Link>
-          ) : (
-            ""
-          )}
-        </div>
-        <div className="navbar-start">
-          {token ? (
-            <Link to="/posts/mine" className="navbar-item">
-              My Posts
-            </Link>
-          ) : (
-            ""
-          )}
-        </div>
-        <div className="navbar-start">
-          {token ? (
-            <Link to="/posts/new" className="navbar-item">
-              New Posts
-            </Link>
-          ) : (
-            ""
-          )}
-        </div>
-        <div className="navbar-start">
-          {token ? (
-            <Link to="/categories/all" className="navbar-item">
-              Category Manager
-            </Link>
-          ) : (
-            ""
-          )}
-        </div>
-        <div className="navbar-start">
-          {token ? (
-            <Link to="/tags/all" className="navbar-item">
-              Tag Manager
-            </Link>
-          ) : (
-            ""
-          )}
-        </div>
+      <div className="navbar-start flex-grow flex justify-evenly">
+        {userLink()}
+      </div>
 
-        <div className="navbar-start">{userLink()}</div>
-
-        <div className="navbar-end">
-          <div className="navbar-item">
-            <div className="buttons">
-              {token ? (
-                <button
-                  className="button is-outlined"
-                  onClick={() => {
-                    setToken("");
-                    navigate("/login");
-                  }}
-                >
-                  Logout
-                </button>
-              ) : (
-                <>
-                  <Link to="/register" className="button is-link">
-                    Register
-                  </Link>
-                  <Link to="/login" className="button is-outlined">
-                    Login
-                  </Link>
-                </>
-              )}
-            </div>
+      <div className="navbar-end">
+        <div className="navbar-item">
+          <div className="buttons">
+            {currentUser ? (
+              <button
+                className="button is-outlined hover:text-white"
+                onClick={() => {
+                  localStorage.removeItem("current_user");
+                  localStorage.removeItem("contractor");
+                  localStorage.removeItem("reader_token");
+                  setCurrentUser(null);
+                  navigate("/login");
+                }}
+              >
+                Logout
+              </button>
+            ) : (
+              <Link to="/login" className="button is-outlined">
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </div>

@@ -25,7 +25,8 @@ export const Register = ({ setUser }) => {
 
   const handleRegister = (e) => {
     e.preventDefault();
-
+    const isContractorValue = userType === "contractor";
+    const qualificationsValue = userType === "contractor" ? qualifications.current.value : undefined;
     if (password.current.value === verifyPassword.current.value) {
       const newUser = {
         username: username.current.value,
@@ -37,9 +38,10 @@ export const Register = ({ setUser }) => {
         profile_image_url: profile_image_url.current.value,
         state_name: stateName.current.value,
         county_name: countyName.current.value,
-        is_contractor: isContractor.current.value,
-        qualifications: userType === "contractor" ? qualifications.current.value : "",
+        is_contractor: isContractorValue,
+        qualifications: qualificationsValue,
       };
+  
 
       registerUser(newUser).then((res) => {
         if ("token" in res && res.token) {
