@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { getAvailableContractors } from '../../managers/GetContractors'; // Update the import
-import { canReviewContractor } from '../../managers/ContractorReview';
+import { useNavigate } from 'react-router-dom';
+import { getAvailableContractors } from '../managers/GetContractors';
+
 
 const AvailableContractors = ({ currentUser }) => {
   const [contractors, setContractors] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchContractors = async () => {
       try {
         const availableContractors = await getAvailableContractors();
-    
         setContractors(availableContractors);
       } catch (error) {
         console.error('Error fetching available contractors:', error);
@@ -20,23 +20,10 @@ const AvailableContractors = ({ currentUser }) => {
     fetchContractors();
   }, []);
 
-  const handleReviewClick = async (contractorId) => {
-    try {
-      // Call the can_review_contractor endpoint to check if the review is allowed
-      const response = await canReviewContractor(contractorId);
-      const canReview = response.can_review;
-
-      if (canReview) {
-        // Navigate to the review form or perform other actions
-        // You might use React Router or any other navigation mechanism
-        // For simplicity, I'm using window.location.href to redirect
-        window.location.href = `/review-form/${contractorId}`;
-      } else {
-        console.log('Cannot review this contractor.');
-      }
-    } catch (error) {
-      console.error('Error checking if review is allowed:', error);
-    }
+  const handleReviewClick = (contractorId) => {
+    console.log('Contractor Id:', contractorId);
+    // Navigate to the review form
+    navigate(`/createreview/${contractorId}`);
   };
 
   return (
@@ -60,7 +47,6 @@ const AvailableContractors = ({ currentUser }) => {
                 <p className="font-normal mb-4 text-gray-600">State Name: {contractor.state_name}</p>
                 <p className="font-normal mb-4 text-gray-600">County Name: {contractor.county_name}</p>
                 {contractor.is_reviewable && (
-                  // Instead of directly linking to the review form, call handleReviewClick
                   <button
                     onClick={() => handleReviewClick(contractor.id)}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

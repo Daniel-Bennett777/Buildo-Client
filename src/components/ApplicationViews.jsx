@@ -6,11 +6,13 @@ import { Register } from '../Registering/Register.jsx'
 import { WorkOrderList } from '../workorders/Home.jsx'
 import { CreateWorkOrderForm } from '../workorders/CreateWork.jsx'
 import MyBuildos from '../workorders/WorkDetails.jsx'
-import AvailableContractors from './Contractors.jsx/ContractorsList.jsx'
+import AvailableContractors from '../Contractors.jsx/ContractorsList.jsx'
 import ContractorMyBuildos from '../workorders/ContractorWorkDetails.jsx'
+import ReviewForm from '../Contractors.jsx/ReviewContractorForm.jsx'
+import ReviewsList from '../Contractors.jsx/SeeAllReviews.jsx'
 
 
-export const ApplicationViews = ({ currentUser, setUser }) => {
+export const ApplicationViews = ({ currentUser, setUser, contractorId }) => {
     return (
         <>
             <Routes>
@@ -34,6 +36,10 @@ export const ApplicationViews = ({ currentUser, setUser }) => {
                 <Route path="/available-contractors" 
                 element={<AvailableContractors currentUser={currentUser} />} 
                 />
+                <Route path="/createreview/:contractorId" 
+                element={<ReviewForm currentUser={currentUser} />} 
+                />
+                <Route path="/reviews" element={<ReviewsList currentUser={currentUser} />} />
               </Route>
             </Routes>
         </>
