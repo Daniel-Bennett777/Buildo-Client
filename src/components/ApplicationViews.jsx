@@ -7,6 +7,7 @@ import { WorkOrderList } from '../workorders/Home.jsx'
 import { CreateWorkOrderForm } from '../workorders/CreateWork.jsx'
 import MyBuildos from '../workorders/WorkDetails.jsx'
 import AvailableContractors from './Contractors.jsx/ContractorsList.jsx'
+import ContractorMyBuildos from '../workorders/ContractorWorkDetails.jsx'
 
 
 export const ApplicationViews = ({ currentUser, setUser }) => {
@@ -25,6 +26,10 @@ export const ApplicationViews = ({ currentUser, setUser }) => {
                 <Route
                 path="/:workorderId"
                 element={<MyBuildos currentUser={currentUser} />}
+                />
+                <Route
+                path="/my-buildos" // Add a new route for contractor my-buildos
+                element={<ContractorMyBuildos currentUser={currentUser} />}
                 />
                 <Route path="/available-contractors" 
                 element={<AvailableContractors currentUser={currentUser} />} 

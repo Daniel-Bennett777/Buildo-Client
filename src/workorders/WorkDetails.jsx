@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { deleteWorkOrder, updateWorkOrder, getWorkOrdersForCurrentUser } from "../managers/GetWorkOrders";
+import ConfirmationModal from "./WorkDetailsModal";
 
 const MyBuildos = ({ currentUser }) => {
   const [myBuildos, setMyBuildos] = useState([]);
   const [editedWorkOrders, setEditedWorkOrders] = useState({});
   const [selectedWorkOrderId, setSelectedWorkOrderId] = useState(null);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedDeleteOrderId, setSelectedDeleteOrderId] = useState(null);
 
   const navigate = useNavigate();
   const { workOrderId } = useParams();
@@ -18,13 +21,28 @@ const MyBuildos = ({ currentUser }) => {
       console.error("Error fetching work orders:", error);
     }
   };
+  const openDeleteModal = (workOrderId) => {
+    setSelectedDeleteOrderId(workOrderId);
+    setDeleteModalOpen(true);
+  };
 
-  const handleDelete = async (workOrderId) => {
+  const closeDeleteModal = () => {
+    setDeleteModalOpen(false);
+  };
+  const handleDelete = async () => {
     try {
-      await deleteWorkOrder(workOrderId);
-      setMyBuildos((prevBuildos) => prevBuildos.filter((order) => order.id !== workOrderId));
+      // Ensure selectedDeleteOrderId is not null before proceeding
+      if (selectedDeleteOrderId !== null) {
+        await deleteWorkOrder(selectedDeleteOrderId);
+        setMyBuildos((prevBuildos) => prevBuildos.filter((order) => order.id !== selectedDeleteOrderId));
+      }
     } catch (error) {
       console.error("Error deleting work order:", error);
+    } finally {
+      // Close the delete modal, regardless of success or failure
+      setDeleteModalOpen(false);
+      // Clear the selected delete order ID
+      setSelectedDeleteOrderId(null);
     }
   };
 
@@ -80,6 +98,18 @@ const MyBuildos = ({ currentUser }) => {
     const fetchWorkOrders = async () => {
       try {
         const workOrders = await getWorkOrdersForCurrentUser();
+        // Custom sorting function to order work orders
+        const sortedWorkOrders = workOrders.sort((a, b) => {
+          // Place "Complete" status at the bottom
+          if (a.status.status === 'Complete' && b.status.status !== 'Complete') {
+            return 1;
+          } else if (a.status.status !== 'Complete' && b.status.status === 'Complete') {
+            return -1;
+          } else {
+            // For other statuses or if statuses are the same, maintain the order
+            return 0;
+          }
+        });
         setMyBuildos(workOrders || []); // Ensure it's not undefined or null
       } catch (error) {
         console.error("Error fetching work orders:", error.message);
@@ -88,7 +118,7 @@ const MyBuildos = ({ currentUser }) => {
     };
   
     fetchWorkOrders();
-  }, [selectedWorkOrderId]);
+  }, [selectedWorkOrderId,selectedDeleteOrderId]);
 
   // Render the work orders
   return (
@@ -208,18 +238,18 @@ const MyBuildos = ({ currentUser }) => {
                 // Display attributes in view mode
                 <>
                   <p className="text-lg font-bold mb-2">{workOrder.service_type}</p>
-                  <p>Status: {workOrder.status.status}</p>
+                  <p className="font-bold text-red-700">Status: {workOrder.status.status}</p>
                   {workOrder.customer && (
                     <div className="mt-4">
                       <p>Customer: {workOrder.customer.first_name}  {workOrder.customer.last_name}</p>
-                      <p>Username: {workOrder.customer.username}</p>
+                      <p>Customer Username: {workOrder.customer.username}</p>
                       {workOrder.contractor && (
                         <div>
                           <p>
-                            Contractor: {workOrder.contractor.first_name}{" "}
-                            {workOrder.contractor.username}
+                            Contractor: {workOrder.contractor.first_name} {workOrder.contractor.last_name}
                           </p>
-                          <p>Qualifications: {workOrder.contractor.qualifications}</p>
+                          <p>Contractor Username: {workOrder.contractor.username}</p>
+                          <p>Contractors Qualifications: {workOrder.contractor.qualifications}</p>
                         </div>
                       )}
                       {/* Additional content */}
@@ -232,6 +262,7 @@ const MyBuildos = ({ currentUser }) => {
                         className="w-full h-auto mt-4"
                       />
                       {/* Edit and Delete buttons */}
+                      {workOrder.status.status !== 'Complete' && (
                       <div className="flex justify-between mt-4">
                         <button
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -240,15 +271,15 @@ const MyBuildos = ({ currentUser }) => {
                           Edit
                         </button>
                         <button
-                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDelete(workOrder.id);
+                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded delete-button"
+                          onClick={() => {
+                            openDeleteModal(workOrder.id);
                           }}
                         >
                           Delete
                         </button>
                       </div>
+                      )}
                     </div>
                   )}
                 </>
@@ -257,6 +288,12 @@ const MyBuildos = ({ currentUser }) => {
           </li>
         ))}
       </ul>
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={handleDelete}
+        workOrderId={selectedDeleteOrderId}
+      />
     </div>
   );
 };

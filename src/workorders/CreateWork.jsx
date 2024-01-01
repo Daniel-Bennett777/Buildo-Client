@@ -35,6 +35,10 @@ export const CreateWorkOrderForm = ({ currentUser }) => {
       console.error("Error creating work order:", error);
     }
   };
+  const handleCancel = () => {
+    // Navigate to the home page when the cancel button is clicked
+    navigate('/');
+  };
 
   return (
     <div className="mt-6 mx-auto max-w-screen-md">
@@ -154,6 +158,13 @@ export const CreateWorkOrderForm = ({ currentUser }) => {
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
             Create Work Order
+          </button>
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded float-right"
+          >
+            Cancel
           </button>
         </div>
       </form>
