@@ -20,7 +20,7 @@ export const NavBar = ({ currentUser, setCurrentUser }) => {
       // Customer Navbar
       return (
         <>
-          <Link to="/my-buildos" className="navbar-item hover:text-white">
+          <Link to="/:workorderId" className="navbar-item hover:text-white">
             My Buildos
           </Link>
           <Link to="/available-contractors" className="navbar-item hover:text-white">

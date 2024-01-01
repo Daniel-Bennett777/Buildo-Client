@@ -5,7 +5,7 @@ export const Authorized = ({ currentUser, setCurrentUser }) => {
   if (currentUser) {
     return <>
       <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser}/>
-      <main className="p-4">
+      <main className="">
         <Outlet />
       </main>
     </>
