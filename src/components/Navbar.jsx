@@ -23,9 +23,12 @@ export const NavBar = ({ currentUser, setCurrentUser }) => {
           <Link to="/:workorderId" className="navbar-item hover:text-white">
             My Buildos
           </Link>
-          <Link to="/available-contractors" className="navbar-item hover:text-white">
+          <Link to="/available-contractors" className="navbar-item hover:text-bold-white">
           Available Contractors
           </Link>
+          <Link to="/reviews" className="navbar-item hover:text-white">
+          Contractor Reviews
+         </Link>
         </>
       );
     } else {
