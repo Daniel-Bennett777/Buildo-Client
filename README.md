@@ -1,57 +1,15 @@
-# Rock of Ages Client with Vite+Tailwind CSS
+Project README for BuilDO
+Overview
+BuilDO is a comprehensive solution addressing the challenge of efficiently connecting customers seeking construction services with professional contractors for remodels and home builds. This platform streamlines the entire process by providing customers with the ability to post detailed work orders. Contractors, in turn, can easily pick up and complete these orders, creating a seamless bridge between those in need of services and the skilled professionals ready to fulfill those needs.
 
-This project was created with a tool named Vite. The React code is exactly like the code that you learned how to write. The only difference is that your files will have the extension of **_.jsx_** instead of **_.js_**.
+Features and Functionality
+The MVP of BuilDO includes essential features for both customers and contractors. Customers can effortlessly post work orders, view their own orders, and leave reviews for contractors. On the other hand, contractors have access to a dashboard displaying available work orders, the ability to pick up and complete orders, and a system for receiving feedback from satisfied customers. The platform is designed to enhance communication and transparency within the construction service ecosystem.
 
-## Getting Started
+Technologies Used
+BuilDO is powered by a robust backend implemented in Python using the Django ORM framework. This ensures efficient data management and seamless interactions between users. The frontend is built using React, providing a dynamic and responsive user interface. Tailwind CSS is employed for styling, enhancing the visual appeal and usability of the platform. The use of these technologies reflects a commitment to a modern and scalable development stack, ensuring a smooth user experience.
 
-1. Clone this repository.
-2. `cd` to the project directory.
-3. Run `npm install`
-4. Run `npm run dev`
+Stretch Goals
+In addition to the core features, BuilDO aims to implement a User Messaging System as a stretch goal. This feature will enable users to communicate freely with contractors or customers, fostering better collaboration. Users will also receive notifications for new messages, ensuring they stay informed and engaged throughout the service process.
 
-You should see output in your terminal like this.
-
-```txt
-VITE v4.4.9  ready in 3531 ms
-
-  ➜  Local:   http://localhost:5173/
-  ➜  Network: use --host to expose
-  ➜  press h to show help
-```
-
-Open the URL that you see in your browser.
-
-## How This Was Generated
-
-To use Vite+Tailwind in any future project, here are the steps you can follow.
-
-1. `mkdir rock-client && cd rock-client`
-2. `npm create vite@latest . -- --template react`
-3. `npm install -D tailwindcss postcss autoprefixer`
-4. `npx tailwindcss init -p`
-5. Replace the contents of `tailwind.config.js` with the following.
-   ```js
-   /** @type {import('tailwindcss').Config} */
-   export default {
-     content: [
-       "./index.html",
-       "./src/**/*.{js,ts,jsx,tsx}",
-     ],
-     theme: {
-       extend: {},
-     },
-     plugins: [],
-   }
+BuilDO represents a sophisticated solution to the challenges of connecting customers and contractors, offering a user-friendly experience backed by cutting-edge technologies.
    ```
-6. Replace the contents of `index.css`
-   ```css
-   @tailwind base;
-   @tailwind components;
-   @tailwind utilities;
-   ```
-7. Run with `npm run dev`
-
-## Reference Links
-
-- [Getting Started with Vite](https://vitejs.dev/guide/)
-- [Install Tailwind CSS with Vite](https://tailwindcss.com/docs/guides/vite)
