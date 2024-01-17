@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 
 import { createReview } from '../managers/ContractorReview';
 import StarRating from './StarRating';
+import ".././Fonts/Fonts.css"
 
 
 const ReviewForm = () => {
@@ -13,7 +14,6 @@ const ReviewForm = () => {
   const [profileImageUrl, setProfileImageUrl] = useState('');
   const { contractorId } = useParams();
 
-  console.log('Contractor Id:', contractorId);
 
   const handleSubmit = async () => {
     try {
@@ -35,14 +35,18 @@ const ReviewForm = () => {
     }
   };
   return (
-    <form onSubmit={handleSubmit} className="mx-auto max-w-screen-md p-4">
+    <div
+    className="min-h-screen bg-fixed bg-center bg-cover" 
+    style={{ backgroundImage: 'url(/images/dark-concrete-texture-background.jpg)' }}
+  >
+    <form onSubmit={handleSubmit} className="mx-auto max-w-screen-md py-12 p-4">
       <div className="mb-6">
-        <label htmlFor="comment" className="block text-md font-medium text-gray-700 mb-2">
+        <label htmlFor="comment" className="block text-md font-medium text-orange-500 mb-2">
           Additional Comments
         </label>
         <textarea
           id="comment"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline"
           name="comment"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
@@ -50,7 +54,7 @@ const ReviewForm = () => {
       </div>
 
       <div className="mb-4">
-        <label className="block text-md font-medium text-gray-700 mb-2">
+        <label className="block text-md font-medium text-orange-500 mb-2">
           Rating
         </label>
         <StarRating
@@ -62,7 +66,7 @@ const ReviewForm = () => {
       </div>
 
       <div className="mb-6">
-        <label htmlFor="profileImageUrl" className="block text-md font-medium text-gray-700 mb-2">
+        <label htmlFor="profileImageUrl" className="block text-md font-medium text-orange-500 mb-2">
           Picture of Contractors Work for You
         </label>
         <input
@@ -77,13 +81,14 @@ const ReviewForm = () => {
 
       <div className="field is-grouped">
         <div className="control">
-          <button className="button is-blue hover:bg-blue-700 text-black font-bold py-2 px-4 rounded" type="submit">
+          <button className="bg-orange-500 hover:bg-orange-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             Submit
           </button>
         </div>
         {/* Add Cancel button or any other actions if needed */}
       </div>
     </form>
+    </div>
   );
 };
 

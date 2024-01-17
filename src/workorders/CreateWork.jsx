@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createWorkOrder } from "../managers/GetWorkOrders";
+import ".././Fonts/Fonts.css"
 
 export const CreateWorkOrderForm = ({ currentUser }) => {
   const [serviceType, setServiceType] = useState("");
@@ -41,12 +42,16 @@ export const CreateWorkOrderForm = ({ currentUser }) => {
   };
 
   return (
-    <div className="mt-6 mx-auto max-w-screen-md">
-      <h1 className="title text-center mb-6">Create New Work Order</h1>
+    <div
+    className="min-h-screen bg-fixed bg-center bg-cover" 
+    style={{ backgroundImage: 'url(/images/dark-concrete-texture-background.jpg)' }}
+  >
+    <div className="mx-auto max-w-screen-md py-6">
+      <h1 className="my-big-font text-orange-500 title text-center mb-6" style={{ fontSize: '2rem' }}>Create New Work Order</h1>
       <form onSubmit={handleSubmit}>
         {/* Service Type */}
         <div className="mb-4">
-          <label htmlFor="serviceType" className="block text-md font-medium text-gray-700 mb-2">
+          <label htmlFor="serviceType" className="block text-md font-medium text-orange-500 mb-2">
             Service Type
           </label>
           <input
@@ -55,14 +60,14 @@ export const CreateWorkOrderForm = ({ currentUser }) => {
             name="serviceType"
             value={serviceType}
             onChange={(e) => setServiceType(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </div>
 
         {/* State Name */}
         <div className="mb-4">
-          <label htmlFor="stateName" className="block text-md font-medium text-gray-700 mb-2">
+          <label htmlFor="stateName" className="block text-md font-medium text-orange-500 mb-2">
             State Name
           </label>
           <input
@@ -71,14 +76,14 @@ export const CreateWorkOrderForm = ({ currentUser }) => {
             name="stateName"
             value={stateName}
             onChange={(e) => setStateName(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </div>
 
         {/* County Name */}
         <div className="mb-4">
-          <label htmlFor="countyName" className="block text-md font-medium text-gray-700 mb-2">
+          <label htmlFor="countyName" className="block text-md font-medium text-orange-500 mb-2">
             County Name
           </label>
           <input
@@ -87,14 +92,14 @@ export const CreateWorkOrderForm = ({ currentUser }) => {
             name="countyName"
             value={countyName}
             onChange={(e) => setCountyName(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </div>
 
         {/* Description */}
         <div className="mb-4">
-          <label htmlFor="description" className="block text-md font-medium text-gray-700 mb-2">
+          <label htmlFor="description" className="block text-md font-medium text-orange-500 mb-2">
             Description
           </label>
           <textarea
@@ -102,14 +107,14 @@ export const CreateWorkOrderForm = ({ currentUser }) => {
             name="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </div>
 
         {/* Profile Image URL */}
         <div className="mb-4">
-          <label htmlFor="profileImageUrl" className="block text-md font-medium text-gray-700 mb-2">
+          <label htmlFor="profileImageUrl" className="block text-md font-medium text-orange-500 mb-2">
             Profile Image URL
           </label>
           <input
@@ -118,15 +123,15 @@ export const CreateWorkOrderForm = ({ currentUser }) => {
             name="profileImageUrl"
             value={profileImageUrl}
             onChange={(e) => setProfileImageUrl(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </div>
         {/* Status */}
         <div className="mb-4">
-          <label className="block text-md font-medium text-gray-700 mb-2">Status</label>
+          <label className="block text-md font-medium text-orange-500 mb-2">Status</label>
           <div className="flex">
-            <label className="mr-4">
+            <label className="mr-4 text-orange-500">
               <input
                 type="radio"
                 name="status"
@@ -137,7 +142,7 @@ export const CreateWorkOrderForm = ({ currentUser }) => {
               />
               View Only
             </label>
-            <label>
+            <label className="mr-4 text-orange-500">
               <input
                 type="radio"
                 name="status"
@@ -155,7 +160,7 @@ export const CreateWorkOrderForm = ({ currentUser }) => {
         <div className="mb-4">
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-orange-500 hover:bg-orange-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
             Create Work Order
           </button>
@@ -168,6 +173,7 @@ export const CreateWorkOrderForm = ({ currentUser }) => {
           </button>
         </div>
       </form>
+    </div>
     </div>
   );
 };

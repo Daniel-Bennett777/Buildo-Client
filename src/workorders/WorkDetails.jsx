@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { deleteWorkOrder, updateWorkOrder, getWorkOrdersForCurrentUser } from "../managers/GetWorkOrders";
 import ConfirmationModal from "./WorkDetailsModal";
-
+import ".././Fonts/Fonts.css"
 const MyBuildos = ({ currentUser }) => {
   const [myBuildos, setMyBuildos] = useState([]);
   const [editedWorkOrders, setEditedWorkOrders] = useState({});
@@ -13,6 +13,7 @@ const MyBuildos = ({ currentUser }) => {
   const navigate = useNavigate();
   const { workOrderId } = useParams();
 
+  // Function to fetch work orders for the current user
   const fetchWorkOrders = async () => {
     try {
       const workOrders = await getWorkOrdersForCurrentUser();
@@ -21,14 +22,16 @@ const MyBuildos = ({ currentUser }) => {
       console.error("Error fetching work orders:", error);
     }
   };
+  // Function to open the delete confirmation modal
   const openDeleteModal = (workOrderId) => {
     setSelectedDeleteOrderId(workOrderId);
     setDeleteModalOpen(true);
   };
-
+  // Function to close the delete confirmation modal
   const closeDeleteModal = () => {
     setDeleteModalOpen(false);
   };
+   // Function to handle the deletion of a work order
   const handleDelete = async () => {
     try {
       // Ensure selectedDeleteOrderId is not null before proceeding
@@ -46,11 +49,13 @@ const MyBuildos = ({ currentUser }) => {
     }
   };
 
+// Function to enter edit mode for a work order
   const enterEditMode = (workOrderId) => {
     setSelectedWorkOrderId(workOrderId);
     setEditedWorkOrders((prevEditedWorkOrders) => ({
       ...prevEditedWorkOrders,
       [workOrderId]: {
+        // Initialize with the current values of the selected work order
         service_type: myBuildos.find((order) => order.id === workOrderId).service_type,
         state_name: myBuildos.find((order) => order.id === workOrderId).state_name,
         county_name: myBuildos.find((order) => order.id === workOrderId).county_name,
@@ -63,12 +68,13 @@ const MyBuildos = ({ currentUser }) => {
     }));
   };
 
+   // Function to submit the edits for a work order
   const submitEdit = async (workOrderId) => {
     try {
       const requestData = {
         ...editedWorkOrders[workOrderId],
         status: {
-          id: editedWorkOrders[workOrderId]?.status?.id, // Ensure you are accessing the correct property
+          id: editedWorkOrders[workOrderId]?.status?.id, // access the correct status 
         },
       };
   
@@ -94,6 +100,8 @@ const MyBuildos = ({ currentUser }) => {
       console.error("Error updating work order:", error);
     }
   };
+  
+  // useEffect hook to fetch work orders on component mount and when work order IDs change
   useEffect(() => {
     const fetchWorkOrders = async () => {
       try {
@@ -122,19 +130,22 @@ const MyBuildos = ({ currentUser }) => {
 
   // Render the work orders
   return (
-    <div className="mt-6 mx-auto max-w-screen-md">
-      <h1 className="title text-center mb-6">My Buildos</h1>
+  <div className="min-h-screen bg-fixed bg-center bg-cover" 
+  style={{ backgroundImage: 'url(/images/dark-concrete-texture-background.jpg)' }}
+>
+    <div className="mx-auto max-w-screen-md py-6">
+      <h1 className="my-big-font text-orange-500 title text-center mb-6" style={{ fontSize: '2rem' }} >My Buildos</h1>
       <ul className="work-orders--container grid gap-6">
         {myBuildos.map((workOrder) => (
           <li
             key={workOrder.id}
-            className="work-order--container border rounded overflow-hidden bg-white shadow-md"
+            className="work-order--container border border-black rounded-lg overflow-hidden bg-gray-300 shadow-md"
           >
             <div className="p-4">
               {selectedWorkOrderId === workOrder.id ? (
                 // Input fields in edit mode
                 <>
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                  <label className="my-custom-font block text-gray-700 text-sm font-bold mb-2">
                     Service Type:
                     <input
                       type="text"
@@ -151,7 +162,7 @@ const MyBuildos = ({ currentUser }) => {
                       }
                     />
                   </label>
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                  <label className="my-custom-font block text-gray-700 text-sm font-bold mb-2">
                     State Name:
                     <input
                       type="text"
@@ -168,7 +179,7 @@ const MyBuildos = ({ currentUser }) => {
                       }
                     />
                   </label>
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                  <label className="my-custom-font block text-gray-700 text-sm font-bold mb-2">
                     County Name:
                     <input
                       type="text"
@@ -201,7 +212,7 @@ const MyBuildos = ({ currentUser }) => {
                       }
                     />
                   </label>
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                  <label className="my-custom-font block text-gray-700 text-sm font-bold mb-2">
                     Profile Image URL:
                     <input
                       type="text"
@@ -237,25 +248,25 @@ const MyBuildos = ({ currentUser }) => {
               ) : (
                 // Display attributes in view mode
                 <>
-                  <p className="text-lg font-bold mb-2">{workOrder.service_type}</p>
-                  <p className="font-bold text-red-700">Status: {workOrder.status.status}</p>
+                  <p className="my-big-font text-lg font-bold mb-2">{workOrder.service_type}</p>
+                  <p className="my-big-font font-bold text-red-700">Status: {workOrder.status.status}</p>
                   {workOrder.customer && (
                     <div className="mt-4">
-                      <p>Customer: {workOrder.customer.first_name}  {workOrder.customer.last_name}</p>
-                      <p>Customer Username: {workOrder.customer.username}</p>
+                      <p className="my-custom-font">Customer: {workOrder.customer.first_name}  {workOrder.customer.last_name}</p>
+                      <p className="my-custom-font">Customer Username: {workOrder.customer.username}</p>
                       {workOrder.contractor && (
                         <div>
-                          <p>
+                          <p className="my-custom-font">
                             Contractor: {workOrder.contractor.first_name} {workOrder.contractor.last_name}
                           </p>
-                          <p>Contractor Username: {workOrder.contractor.username}</p>
-                          <p>Contractors Qualifications: {workOrder.contractor.qualifications}</p>
+                          <p className="my-custom-font">Contractor Username: {workOrder.contractor.username}</p>
+                          <p className="my-custom-font">Contractors Qualifications: {workOrder.contractor.qualifications}</p>
                         </div>
                       )}
                       {/* Additional content */}
-                      <p>State: {workOrder.state_name}</p>
-                      <p>County: {workOrder.county_name}</p>
-                      <p>Description: {workOrder.description}</p>
+                      <p className="my-custom-font">State: {workOrder.state_name}</p>
+                      <p className="my-custom-font">County: {workOrder.county_name}</p>
+                      <p className="my-custom-font">Description: {workOrder.description}</p>
                       <img
                         src={workOrder.profile_image_url}
                         alt={`Work Order ${workOrder.id}`}
@@ -265,7 +276,7 @@ const MyBuildos = ({ currentUser }) => {
                       {workOrder.status.status !== 'Complete' && (
                       <div className="flex justify-between mt-4">
                         <button
-                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                          className="bg-orange-500 hover:bg-orange-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                           onClick={() => enterEditMode(workOrder.id)}
                         >
                           Edit
@@ -294,6 +305,7 @@ const MyBuildos = ({ currentUser }) => {
         onConfirm={handleDelete}
         workOrderId={selectedDeleteOrderId}
       />
+    </div>
     </div>
   );
 };

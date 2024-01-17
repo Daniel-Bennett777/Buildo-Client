@@ -46,7 +46,7 @@ export const Register = ({ setUser }) => {
       registerUser(newUser).then((res) => {
         if ("token" in res && res.token) {
           setUser(res);
-          navigate("/");
+          navigate("/login");
         }
       });
     } else {
@@ -54,10 +54,11 @@ export const Register = ({ setUser }) => {
     }
   };
 return (
-  <section className="login-container pt-[5%] pl-10 pr-10 flex items-center justify-center">
-  <form className="mb-4" onSubmit={handleRegister}>
+  <section className="login-container pt-[5%] pl-10 pr-10 flex items-center justify-center bg-center bg-contain bg-fixed"
+  style={{ backgroundImage: 'url(/images/dark-concrete-texture-background.jpg)' }}>
+  <form className="mb-4 " onSubmit={handleRegister}>
     <div className="mb-4">
-      <label htmlFor="userType" className="block text-md font-medium text-gray-700 mb-2">
+      <label htmlFor="userType" className="block text-md font-medium text-orange-500 mb-2">
         User Type
       </label>
       <div className="control">
@@ -87,113 +88,113 @@ return (
 
     <div className="mb-4">
       <label htmlFor="firstName" 
-      className="block text-md font-medium text-gray-700 mb-2">
+      className="block text-md font-medium text-orange-500 mb-2">
         First Name
       </label>
       <input type="text" id = "firstName" 
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline" 
       name="firstName" ref={firstName} />
     </div>
 
     <div className="mb-4">
       <label htmlFor="lastName" 
-      className="block text-md font-medium text-gray-700 mb-2">
+      className="block text-md font-medium text-orange-500 mb-2">
         Last Name
       </label>
       <input type="text" id="lastName" 
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline" 
       name="lastName" ref={lastName} />
     </div>
     <div className="mb-4">
-    <label htmlFor="username" className="block text-md font-medium text-gray-700 mb-2">
+    <label htmlFor="username" className="block text-md font-medium text-orange-500 mb-2">
     Username
     </label>
     <input
         type="text"
         id="username"
         autoComplete="off"
-        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline"
         name="username"
         ref={username}/>
     </div>
     <div className="mb-4">
       <label htmlFor="email"
-      className="block text-md font-medium text-gray-700 mb-2">
+      className="block text-md font-medium text-orange-500 mb-2">
         Email
       </label>
       <input type="text" id="email"autoComplete="off" 
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline" 
       name="email" 
       ref={email} />
     </div>
 
     <div className="mb-4">
-      <label htmlFor="password" className="block text-md font-medium text-gray-700 mb-2">
+      <label htmlFor="password" className="block text-md font-medium text-orange-500 mb-2">
         Password
       </label>
       <input type="password" id ="password"autoComplete="off" 
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline"
       name="password" 
       ref={password} />
     </div>
 
     <div className="mb-4">
-      <label htmlFor="verifyPassword" className="block text-md font-medium text-gray-700 mb-2">
+      <label htmlFor="verifyPassword" className="block text-md font-medium text-orange-500 mb-2">
         Verify Password
       </label>
       <input type="password" id ="verifyPassword" 
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"  
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline"  
       name="verifyPassword" 
       ref={verifyPassword} />
     </div>
 
     <div className="mb-6">
-      <label htmlFor="bio" className="block text-md font-medium text-gray-700 mb-2">
+      <label htmlFor="bio" className="block text-md font-medium text-orange-500 mb-2">
         Bio
       </label>
       <textarea id="bio" 
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline" 
       name="bio" 
       ref={bio}></textarea>
     </div>
 
     <div className="mb-6">
-      <label htmlFor="profile_image_url" className="block text-md font-medium text-gray-700 mb-2">
+      <label htmlFor="profile_image_url" className="block text-md font-medium text-orange-500 mb-2">
         Profile Picture
       </label>
       <input type="text" id="profile_image_url"  
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline" 
       name="profile_image_url" 
       ref={profile_image_url} />
     </div>
 
     <div className="mb-4">
-      <label htmlFor="stateName" className="block text-md font-medium text-gray-700 mb-2">
+      <label htmlFor="stateName" className="block text-md font-medium text-orange-500 mb-2">
         State Name
       </label>
       <input type="text" id="stateName" 
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline" 
       name="stateName" 
       ref={stateName} />
     </div>
 
     <div className="mb-4">
-      <label htmlFor="countyName" className="block text-md font-medium text-gray-700 mb-2">
+      <label htmlFor="countyName" className="block text-md font-medium text-orange-500 mb-2">
         County Name
       </label>
       <input type="text" id="countyName"
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline" 
       name="countyName" 
       ref={countyName} />
     </div>
 
     {userType === "contractor" && (
       <div className="mb-4">
-        <label htmlFor="qualifications"className="block text-md font-medium text-gray-700 mb-2">
+        <label htmlFor="qualifications"className="block text-md font-medium text-orange-500 mb-2">
           Qualifications
         </label>
         <input type="text" id="qualifications" 
-        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"  
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-orange-500 leading-tight focus:outline-none focus:shadow-outline"  
         name="qualifications" 
         ref={qualifications} />
       </div>
@@ -201,12 +202,12 @@ return (
 
     <div className="field is-grouped">
       <div className="control">
-        <button className="button is-link" type="submit">
+        <button className="button is-link bg-orange-500 hover:bg-orange-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
           Submit
         </button>
       </div>
       <div className="control">
-        <Link to="/login" className="button is-link is-light">
+        <Link to="/login" className="button is-link is-light text-red-500">
           Cancel
         </Link>
       </div>

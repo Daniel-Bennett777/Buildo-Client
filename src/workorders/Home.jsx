@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getWorkOrders } from "../managers/GetWorkOrders";
+import ".././Fonts/Fonts.css"
 
 
 export const WorkOrderList = ({ currentUser }) => {
@@ -37,49 +38,54 @@ export const WorkOrderList = ({ currentUser }) => {
     }
   };
 
-  return (
-    <div className="min-h-screen w-full bg-gradient-to-t from-gray-300 to-gray-100 flex flex-col items-center justify-center">
-      <div className="mx-auto max-w-screen-md w-full p-6">
-        <div className="mb-4 flex justify-end">
+  return ( 
+  <div
+    className="min-h-screen bg-fixed bg-center bg-cover" 
+    style={{ backgroundImage: 'url(/images/dark-concrete-texture-background.jpg)' }}
+  >
+      <div className="mx-auto max-w-screen-md w-full p-3">
+        <div className="mb-10 flex justify-end">
         {!currentUser.rare_user.is_contractor && (
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className=" mt-10 bg-gradient-to-b from-orange-500 to-orange-300 hover:from-orange-600 hover:to-orange-400 text-black font-bold py-3 px-6 rounded transform transition-transform duration-300 hover:scale-105"
               onClick={() => {
                 // Add the logic to navigate to the "Add Post" page
                 navigate("/creatework");
               }}
             >
-              Add Post
-            </button>
+              Add Work Post &nbsp;
+              <i className="fa-solid fa-pencil text-black" ></i>
+
+              </button>
           )}
         </div>
-        <h1 className="title text-center mb-6">All Work Orders</h1>
-        <ul className="work-orders--container grid gap-6">
+        <h1 className="mb-10 my-big-font title text-center text-orange-500"  style={{ fontSize: '2rem' }} >All Work Orders</h1>
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
           {workOrders.map((workOrder) => (
             <li
               key={workOrder.id}
-              className="work-order--container border rounded overflow-hidden bg-white shadow-md"
+              className="work-order--container border border-black rounded overflow-hidden bg-gray-300 shadow-md"
             >
               <div className="p-4">
-                <p className="text-sm">{workOrder.date_posted}</p>
-                <p className="text-lg font-bold mb-2">{workOrder.service_type}</p>
-                <p className="font-bold text-red-700">Status: {workOrder.status.status}</p>
+                <p className="my-custom-font text-sm">{workOrder.date_posted}</p>
+                <p className="my-big-font text-lg font-bold mb-2">{workOrder.service_type}</p>
+                <p className="my-big-font font-bold text-red-700">Status: {workOrder.status.status}</p>
                 {workOrder.customer && (
                   <div className="mt-4">
-                  <p>Customer: {workOrder.customer.first_name} {workOrder.customer.last_name}</p>
-                  <p>Customer Username: {workOrder.customer.username}</p>
+                  <p className="my-custom-font">Customer: {workOrder.customer.first_name} {workOrder.customer.last_name}</p>
+                  <p className="my-custom-font">Customer Username: {workOrder.customer.username}</p>
                   {workOrder.contractor && (
                     <div>
-                      <p>Contractor: {workOrder.contractor.first_name} {workOrder.contractor.last_name}</p>
-                      <p>Contractor Username: {workOrder.contractor.username}</p>
-                      <p>Contractors Qualifications: {workOrder.contractor.qualifications}</p>
+                      <p className="my-custom-font">Contractor: {workOrder.contractor.first_name} {workOrder.contractor.last_name}</p>
+                      <p className="my-custom-font">Contractor Username: {workOrder.contractor.username}</p>
+                      <p className="my-custom-font">Contractors Qualifications: {workOrder.contractor.qualifications}</p>
                     </div>
                     )}
                     {/* Additional content */}
-                    <p>State: {workOrder.state_name}</p>
-                    <p>County: {workOrder.county_name}</p>
-                    <p>Description: {workOrder.description}</p>
+                    <p className="my-custom-font" >State: {workOrder.state_name}</p>
+                    <p className="my-custom-font" >County: {workOrder.county_name}</p>
+                    <p className="my-custom-font" >Description: {workOrder.description}</p>
                     <img
                       src={workOrder.profile_image_url}
                       alt={`Work Order ${workOrder.id}`}
@@ -90,7 +96,8 @@ export const WorkOrderList = ({ currentUser }) => {
                         className="block mx-auto mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                         onClick={() => handleAcceptJob(workOrder.id)}
                       >
-                        Accept Job
+                        Accept Job &nbsp;
+                        <i className="fa-solid fa-hammer"></i>
                       </button>
                     )}
                   </div>

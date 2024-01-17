@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../managers/RegisterManager";
+import ".././Fonts/Fonts.css"
 
 
 export const Login = ({ setUser }) => {
@@ -28,17 +29,19 @@ export const Login = ({ setUser }) => {
   };
 
   return (
-    <section className="login-container pt-[5%] pl-10 pr-10 flex items-center justify-center">
-      <div className="form-div bg-white custom-border-radius p-8 min-h-[50vh] w-[50vw] flex items-center justify-center custom-shadow">
+    <section className="login-container pt-[5%] pl-10 pr-10 flex items-center justify-center bg-center bg-contain bg-fixed"
+    style={{ backgroundImage: 'url(/images/dark-concrete-texture-background.jpg)' }}>
+      <div className="form-div custom-border-radius p-16 min-h-[50vh] w-[50vw] flex items-center justify-center custom-shadow">
+        
         <form className="flex flex-col w-3/4" onSubmit={handleLogin}>
-          <h1 className="text-2xl font-bold mb-4">Buildo</h1>
-          <p className="text-lg mb-6">Please sign in</p>
+          <h1 className="my-big-font text-orange-500 text-2xl font-bold mb-4">Buildos</h1>
+          <p className="text-orange-500 text-lg mb-6">Please sign in</p>
 
           <div className="mb-4">
-            <label className="block text-md font-medium text-gray-700 mb-2">
+            <label className="block text-md font-medium text-orange-500 mb-2">
               Username
             </label>
-            <div className="mt-1">
+            <div className="mt-10">
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="text"
@@ -48,10 +51,10 @@ export const Login = ({ setUser }) => {
           </div>
 
           <div className="mb-6">
-            <label className="block text-md font-medium text-gray-700 mb-2">
+            <label className="block text-md font-medium text-orange-500 mb-2">
               Password
             </label>
-            <div className="mt-1">
+            <div className="mt-10">
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 type="password"
@@ -62,7 +65,7 @@ export const Login = ({ setUser }) => {
 
           <div className="flex justify-around items-center mb-6">
             <button
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-orange-500 hover:bg-orange-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
             >
               Submit
@@ -76,16 +79,16 @@ export const Login = ({ setUser }) => {
           </div>
 
           {isUnsuccessful && (
-            <p className="text-red-500 text-xs italic">
+            <p className=" text-red-500 text-xs italic">
               Username or password not valid
             </p>
           )}
-          <div className="mt-4 text-center">
-            <p className="text-gray-700">
+          <div className="mt-16 text-center">
+            <p className="text-orange-500">
               Not yet registered?
               <Link
                 to="/register"
-                className="text-blue-600 hover:text-blue-800"
+                className="text-white hover:text-orange-500"
               >
                 {`\t`}Click here
               </Link>

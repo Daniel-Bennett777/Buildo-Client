@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getReviews } from '../managers/ContractorReview';
+import ".././Fonts/Fonts.css"
 
 
 const ReviewsList = () => {
@@ -24,9 +25,12 @@ const ReviewsList = () => {
     }`}>★</span>
   );
   return (
-    <div className="min-h-screen w-full bg-gradient-to-t from-gray-300 to-gray-100 flex flex-col items-center justify-center">
+    <div
+    className="min-h-screen bg-fixed bg-center bg-cover" 
+    style={{ backgroundImage: 'url(/images/dark-concrete-texture-background.jpg)' }}
+  >
       <div className="mx-auto max-w-screen-md w-full p-6">
-        <h1 className="title text-center mb-6">Contractor Reviews</h1>
+        <h1 className="my-big-font text-orange-500 title text-center mb-6" style={{ fontSize: '2rem' }}>Contractor Reviews</h1>
         <ul className="reviews-list grid gap-6">
           {reviews.map((review) => (
             <li
@@ -36,6 +40,12 @@ const ReviewsList = () => {
               <div className="mb-2">
                 <p className="font-bold text-lg">Customer: {review.customer_username}</p>
                 <p className="font-bold text-lg">Contractor: {review.contractor_username}</p>
+                <p className="font-bold text-lg">Review Picture</p>
+                <img
+                  src={review.profile_image_url}
+                  alt={`Review ${review.id}`}
+                  className="w-full h-auto border border-black rounded"
+                />
               </div>
               <div className="mb-2">
                 <p className="font-bold text-lg">Rating: {review.rating}</p>
