@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { decommitWorkOrder, getContractorMyBuildos, markWorkOrderComplete } from "../managers/GetContractors";
+import ".././Fonts/Fonts.css"
 
 const ContractorMyBuildos = ({ currentUser }) => {
   const [contractorMyBuildos, setContractorMyBuildos] = useState([]);
@@ -84,8 +85,12 @@ const ContractorMyBuildos = ({ currentUser }) => {
 
   // Render the contractor work orders
   return (
-    <div className="mt-6 mx-auto max-w-screen-md">
-      <h1 className="title text-center mb-6">My Buildos (Contractor View)</h1>
+    <div
+    className="min-h-screen bg-fixed bg-center bg-cover" 
+    style={{ backgroundImage: 'url(/images/dark-concrete-texture-background.jpg)' }}
+  >
+    <div className=" mx-auto max-w-screen-md">
+      <h1 className="my-custom-font title text-orange-400 text-center py-6 mb-6">My Buildos (Contractor View)</h1>
       <ul className="work-orders--container grid gap-6">
         {contractorMyBuildos.map((workOrder) => (
           <li key={workOrder.id} className="work-order--container border rounded overflow-hidden bg-white shadow-md">
@@ -161,6 +166,7 @@ const ContractorMyBuildos = ({ currentUser }) => {
         </div>
       )}
     </div>
+    </div> 
   );
 };
 

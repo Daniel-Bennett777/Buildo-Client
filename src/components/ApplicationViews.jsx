@@ -10,9 +10,10 @@ import AvailableContractors from '../Contractors.jsx/ContractorsList.jsx'
 import ContractorMyBuildos from '../workorders/ContractorWorkDetails.jsx'
 import ReviewForm from '../Contractors.jsx/ReviewContractorForm.jsx'
 import ReviewsList from '../Contractors.jsx/SeeAllReviews.jsx'
+import { About } from '../About/About.jsx'
 
 
-export const ApplicationViews = ({ currentUser, setUser, contractorId }) => {
+export const ApplicationViews = ({ currentUser, setUser }) => {
     return (
         <>
             <Routes>
@@ -27,7 +28,7 @@ export const ApplicationViews = ({ currentUser, setUser, contractorId }) => {
                 <Route path="/creatework" element={<CreateWorkOrderForm currentUser={currentUser} />} />
                 <Route
                 path="/:workorderId"
-                element={<MyBuildos currentUser={currentUser} />}
+                element={<MyBuildos currentUser={currentUser}  />}
                 />
                 <Route
                 path="/my-buildos" // Add a new route for contractor my-buildos
@@ -40,6 +41,7 @@ export const ApplicationViews = ({ currentUser, setUser, contractorId }) => {
                 element={<ReviewForm currentUser={currentUser} />} 
                 />
                 <Route path="/reviews" element={<ReviewsList currentUser={currentUser} />} />
+                <Route path="/about" element={<About />} /> {/* Add the About route */}
               </Route>
             </Routes>
         </>
