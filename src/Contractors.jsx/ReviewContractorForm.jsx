@@ -1,14 +1,14 @@
 // ReviewForm.jsx
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { createReview } from '../managers/ContractorReview';
-import StarRating from './StarRating';
+import { StarRating } from './StarRating';
 import ".././Fonts/Fonts.css"
 
 
-const ReviewForm = () => {
+export const ReviewForm = () => {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(1); // Set a default value, adjust as needed
   const [profileImageUrl, setProfileImageUrl] = useState('');
@@ -91,5 +91,3 @@ const ReviewForm = () => {
     </div>
   );
 };
-
-export default ReviewForm;
