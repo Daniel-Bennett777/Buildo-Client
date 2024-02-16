@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom"
 import { NavBar } from "./Navbar.jsx"
 import { Footer } from "./Footer.jsx"
 
-export const Authorized = ({ currentUser, setCurrentUser, closeDropdown }) => {
+export const Authorized = ({ currentUser, setCurrentUser }) => {
   if (currentUser) {
     return <>
       <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser}/>

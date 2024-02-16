@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { deleteWorkOrder, updateWorkOrder, getWorkOrdersForCurrentUser } from "../managers/GetWorkOrders";
 import ConfirmationModal from "./WorkDetailsModal";
 import ".././Fonts/Fonts.css"
-const MyBuildos = ({ currentUser }) => {
+export const MyBuildos = ({ currentUser }) => {
   const [myBuildos, setMyBuildos] = useState([]);
   const [editedWorkOrders, setEditedWorkOrders] = useState({});
   const [selectedWorkOrderId, setSelectedWorkOrderId] = useState(null);
@@ -309,5 +309,3 @@ const MyBuildos = ({ currentUser }) => {
     </div>
   );
 };
-
-export default MyBuildos;

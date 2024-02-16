@@ -58,3 +58,33 @@ export const getReviews = async () => {
     throw error;
   }
 };
+
+export const getReviewsOfContractor = async (contractorId) => {
+  try {
+    const currentUser = JSON.parse(localStorage.getItem('current_user'));
+
+    if (!currentUser || !currentUser.token) {
+      throw new Error('User not authenticated');
+    }
+
+    const url = `http://localhost:8000/reviews/${contractorId}`;  // Use template literals correctly
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Token ${currentUser.token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to fetch reviews');
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching reviews:', error);
+    throw error;
+  }
+};

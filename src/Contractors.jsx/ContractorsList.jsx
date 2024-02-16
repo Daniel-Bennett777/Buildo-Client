@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAvailableContractors } from '../managers/GetContractors';
+import { getReviews, getReviewsOfContractor } from '../managers/ContractorReview';
 import ".././Fonts/Fonts.css"
 
 
-const AvailableContractors = ({ currentUser }) => {
+export const AvailableContractors = ({ currentUser }) => {
   const [contractors, setContractors] = useState([]);
   const navigate = useNavigate();
 
@@ -12,7 +13,8 @@ const AvailableContractors = ({ currentUser }) => {
     const fetchContractors = async () => {
       try {
         const availableContractors = await getAvailableContractors();
-        setContractors(availableContractors);
+        const contractorsWithReviews = await calculateAverageRatings(availableContractors);
+        setContractors(contractorsWithReviews);
       } catch (error) {
         console.error('Error fetching available contractors:', error);
       }
@@ -21,15 +23,53 @@ const AvailableContractors = ({ currentUser }) => {
     fetchContractors();
   }, []);
 
+  const calculateAverageRatings = async (contractors) => {
+    const contractorsWithReviews = [];
+  
+    for (const contractor of contractors) {
+      const reviews = await getReviews(contractor.id);
+  
+      // Find the review associated with the current contractor
+      const contractorReview = reviews.find(review => review.contractor.id === contractor.id);
+  
+      if (contractorReview) {
+        // Add rating property to the contractor
+        contractor.rating = contractorReview.rating;
+      }
+  
+      contractorsWithReviews.push(contractor);
+    }
+  
+    return contractorsWithReviews;
+  };
+
+  const getReviewsForContractor = async (contractorId) => {
+    try {
+      const reviewsData = await getReviewsOfContractor(contractorId);
+      console.log(`Reviews for contractor ${contractorId}:`, reviewsData);
+      return reviewsData;
+    } catch (error) {
+      console.error('Error fetching reviews for contractor:', error);
+      return [];
+    }
+  };
+
+  const calculateAverageRating = (reviews) => {
+    if (reviews.length === 0) {
+      return 0;  // Default value if no reviews
+    }
+  
+    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+    return totalRating / reviews.length;
+  };
+
   const handleReviewClick = (contractorId) => {
     // Navigate to the review form
     navigate(`/createreview/${contractorId}`);
   };
 
   return (
-    <div     className="min-h-screen bg-fixed bg-center bg-cover" 
-    style={{ backgroundImage: 'url(/images/dark-concrete-texture-background.jpg)' }}
-  >
+    <div className="min-h-screen bg-fixed bg-center bg-cover" style={{ backgroundImage: 'url(/images/dark-concrete-texture-background.jpg)' }}>
       <div className="mx-auto max-w-screen-md py-6 p-4">
         <h2 className="my-big-font text-orange-500 title text-center font-bold mb-6" style={{ fontSize: '2rem' }}>Available Contractors</h2>
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -37,6 +77,19 @@ const AvailableContractors = ({ currentUser }) => {
             <li key={contractor.id} className="border rounded-lg overflow-hidden bg-white shadow-md bg-gradient-to-r from-gray-300 to-orange-200">
               <div className="p-4">
                 <p className="font-bold mb-2 text-black">Full Name: {contractor.full_name}</p>
+                {/* Display average star rating */}
+                <div className="flex items-center mb-2" onClick={() => navigate(`/reviews/${contractor.id}`)}>
+                Actual Rating: {contractor.rating ? contractor.rating.toFixed(2) : 'No Reviews'} {/* Assume contractor.rating is a property with the rating */}
+                {contractor.rating && (
+                  <div className="flex items-center">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span key={star} className={`cursor-pointer text-2xl ${
+                        star <= contractor.rating ? 'text-yellow-500' : 'text-gray-300'
+                      }`}>★</span>
+                    ))}
+                  </div>
+                )}
+              </div>
                 <img
                   src={contractor.profile_image_url}
                   alt={`Contractor ${contractor.id}`}
@@ -65,7 +118,4 @@ const AvailableContractors = ({ currentUser }) => {
         </ul>
       </div>
     </div>
-  );
-};
-
-export default AvailableContractors;
+  )};

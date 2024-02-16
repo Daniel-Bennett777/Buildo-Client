@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { getReviews } from '../managers/ContractorReview';
-import ".././Fonts/Fonts.css"
+import { useParams } from 'react-router-dom';
+import { getReviewsOfContractor } from '../managers/ContractorReview';
 
-
-const ReviewsList = () => {
+export const ReviewsList = ({ currentUser }) => {
+  const { contractorId } = useParams();
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const reviewsData = await getReviews();
+        const reviewsData = await getReviewsOfContractor(contractorId);
         setReviews(reviewsData);
       } catch (error) {
-        console.error('Error fetching reviews:', error);
+        console.error('Error fetching contractor reviews:', error);
       }
     };
 
     fetchReviews();
-  }, []); // Empty dependency array ensures the effect runs once when the component mounts
+  }, [contractorId]);
+
+  // Render UI with the fetched reviews...
+ // Empty dependency array ensures the effect runs once when the component mounts
   
   const StarRating = ({ value, star }) => (
     <span className={`cursor-pointer text-2xl ${
@@ -61,6 +64,4 @@ const ReviewsList = () => {
         </ul>
       </div>
     </div>
-  );
-};
-export default ReviewsList;
+  )};

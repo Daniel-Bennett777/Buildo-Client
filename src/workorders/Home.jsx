@@ -8,6 +8,8 @@ import ".././Fonts/Fonts.css"
 export const WorkOrderList = ({ currentUser }) => {
   const [workOrders, setWorkOrders] = useState([]);
   const [reloadData, setReloadData] = useState(false);
+  const [showPhoneNumberForm, setShowPhoneNumberForm] = useState(false);
+  const [contractorPhoneNumber, setContractorPhoneNumber] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,37 +17,52 @@ export const WorkOrderList = ({ currentUser }) => {
       setWorkOrders(workOrderArray);
     });
   }, [currentUser, reloadData]);
-  const handleAcceptJob = async (workOrderId) => {
+  const handleRequestJob = (workOrderId) => {
+    // Show the phone number form
+    setShowPhoneNumberForm(true);
+  };
+  const handleSubmitPhoneNumber = async (workOrderId) => {
     try {
-      const response = await fetch(`http://localhost:8000/work_orders/${workOrderId}/accept_job`, {
+      // Assuming you have a way to get the contractor's phone number
+      const contractorPhoneNumber = prompt(' Please enter your phone number:');
+  
+      // Convert the phone number to an integer (assuming it's an integer field)
+      const contractorPhoneNumberInt = parseInt(contractorPhoneNumber, 10);
+  
+      const response = await fetch(`http://localhost:8000/job_requests/create_job_request`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Token ${currentUser.token}`,
         },
+        body: JSON.stringify({
+          work_order: workOrderId,
+          request_status: 1, // Assuming 1 corresponds to "Pending" in your backend
+          contractor_cellphone: contractorPhoneNumberInt,
+        }),
       });
   
       if (!response.ok) {
-        console.error('Error response:', await response.text()); // Log the full response
-        throw new Error('Failed to accept the job. Please try again.');
+        console.error('Error response:', await response.text());
+        throw new Error('Failed to request the job. Please try again.');
       }
-
+  
       // Toggle the state to trigger a re-fetch
       setReloadData((prev) => !prev);
     } catch (error) {
-      console.error('Error accepting the job:', error.message);
+      console.error('Error requesting the job:', error.message);
       // Handle the error appropriately (e.g., show a notification to the user)
     }
   };
 
-  return ( 
-  <div
-    className="min-h-screen bg-fixed bg-center bg-cover" 
-    style={{ backgroundImage: 'url(/images/dark-concrete-texture-background.jpg)' }}
-  >
+  return (
+    <div
+      className="min-h-screen bg-fixed bg-center bg-cover"
+      style={{ backgroundImage: 'url(/images/dark-concrete-texture-background.jpg)' }}
+    >
       <div className="mx-auto max-w-screen-md w-full p-3">
         <div className="mb-10 flex justify-end">
-        {!currentUser.rare_user.is_contractor && (
+          {!currentUser.rare_user.is_contractor && (
             <button
               className=" mt-10 bg-gradient-to-b from-orange-500 to-orange-300 hover:from-orange-600 hover:to-orange-400 text-black font-bold py-3 px-6 rounded transform transition-transform duration-300 hover:scale-105"
               onClick={() => {
@@ -54,14 +71,12 @@ export const WorkOrderList = ({ currentUser }) => {
               }}
             >
               Add Work Post &nbsp;
-              <i className="fa-solid fa-pencil text-black" ></i>
-
-              </button>
+              <i className="fa-solid fa-pencil text-black"></i>
+            </button>
           )}
         </div>
-        <h1 className="mb-10 my-big-font title text-center text-orange-500"  style={{ fontSize: '2rem' }} >All Work Orders</h1>
+        <h1 className="mb-10 my-big-font title text-center text-orange-500" style={{ fontSize: '2rem' }}>All Work Orders</h1>
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
           {workOrders.map((workOrder) => (
             <li
               key={workOrder.id}
@@ -73,32 +88,52 @@ export const WorkOrderList = ({ currentUser }) => {
                 <p className="my-big-font font-bold text-red-700">Status: {workOrder.status.status}</p>
                 {workOrder.customer && (
                   <div className="mt-4">
-                  <p className="my-custom-font">Customer: {workOrder.customer.first_name} {workOrder.customer.last_name}</p>
-                  <p className="my-custom-font">Customer Username: {workOrder.customer.username}</p>
-                  {workOrder.contractor && (
-                    <div>
-                      <p className="my-custom-font">Contractor: {workOrder.contractor.first_name} {workOrder.contractor.last_name}</p>
-                      <p className="my-custom-font">Contractor Username: {workOrder.contractor.username}</p>
-                      <p className="my-custom-font">Contractors Qualifications: {workOrder.contractor.qualifications}</p>
-                    </div>
+                    <p className="my-custom-font">Customer: {workOrder.customer.first_name} {workOrder.customer.last_name}</p>
+                    <p className="my-custom-font">Customer Username: {workOrder.customer.username}</p>
+                    {workOrder.contractor && (
+                      <div>
+                        <p className="my-custom-font">Contractor: {workOrder.contractor.first_name} {workOrder.contractor.last_name}</p>
+                        <p className="my-custom-font">Contractor Username: {workOrder.contractor.username}</p>
+                        <p className="my-custom-font">Contractors Qualifications: {workOrder.contractor.qualifications}</p>
+                      </div>
                     )}
                     {/* Additional content */}
-                    <p className="my-custom-font" >State: {workOrder.state_name}</p>
-                    <p className="my-custom-font" >County: {workOrder.county_name}</p>
-                    <p className="my-custom-font" >Description: {workOrder.description}</p>
+                    <p className="my-custom-font">State: {workOrder.state_name}</p>
+                    <p className="my-custom-font">County: {workOrder.county_name}</p>
+                    <p className="my-custom-font">Description: {workOrder.description}</p>
                     <img
                       src={workOrder.profile_image_url}
                       alt={`Work Order ${workOrder.id}`}
                       className="w-full h-auto mt-4"
                     />
                     {currentUser.rare_user.is_contractor && !workOrder.contractor && (
-                      <button
-                        className="block mx-auto mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                        onClick={() => handleAcceptJob(workOrder.id)}
-                      >
-                        Accept Job &nbsp;
-                        <i className="fa-solid fa-hammer"></i>
-                      </button>
+                      <div>
+                        {showPhoneNumberForm ? (
+                          <div>
+                            <input
+                              type="text"
+                              placeholder="Enter your phone number"
+                              value={contractorPhoneNumber}
+                              onChange={(e) => setContractorPhoneNumber(e.target.value)}
+                            />
+                            <button
+                              className="block mx-auto mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                              onClick={() => handleSubmitPhoneNumber(workOrder.id)}
+                            >
+                              Request Job &nbsp;
+                              <i className="fa-solid fa-hammer"></i>
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            className="block mx-auto mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                            onClick={() => handleRequestJob(workOrder.id)}
+                          >
+                            Request Job &nbsp;
+                            <i className="fa-solid fa-hammer"></i>
+                          </button>
+                        )}
+                      </div>
                     )}
                   </div>
                 )}
@@ -108,4 +143,5 @@ export const WorkOrderList = ({ currentUser }) => {
         </ul>
       </div>
     </div>
-  )}
+  );
+};

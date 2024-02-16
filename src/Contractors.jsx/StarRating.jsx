@@ -1,6 +1,6 @@
 import React from 'react';
 
-const StarRating = ({ value, onChange }) => {
+export const StarRating = ({ value, onChange }) => {
   const stars = [1, 2, 3, 4, 5];
 
   return (
@@ -19,5 +19,3 @@ const StarRating = ({ value, onChange }) => {
     </div>
   );
 };
-
-export default StarRating;

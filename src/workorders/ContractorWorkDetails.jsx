@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { decommitWorkOrder, getContractorMyBuildos, markWorkOrderComplete } from "../managers/GetContractors";
 import ".././Fonts/Fonts.css"
 
-const ContractorMyBuildos = ({ currentUser }) => {
+export const ContractorMyBuildos = ({ currentUser }) => {
   const [contractorMyBuildos, setContractorMyBuildos] = useState([]);
   const [selectedWorkOrderId, setSelectedWorkOrderId] = useState(null);
   const [reloadData, setReloadData] = useState(false);
@@ -170,4 +170,3 @@ const ContractorMyBuildos = ({ currentUser }) => {
   );
 };
 
-export default ContractorMyBuildos;
