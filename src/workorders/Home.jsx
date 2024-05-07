@@ -2,33 +2,77 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getWorkOrders } from "../managers/GetWorkOrders";
-import ".././Fonts/Fonts.css"
-
+import ".././Fonts/Fonts.css";
 
 export const WorkOrderList = ({ currentUser }) => {
   const [workOrders, setWorkOrders] = useState([]);
   const [reloadData, setReloadData] = useState(false);
-  const [showPhoneNumberForm, setShowPhoneNumberForm] = useState(false);
+  const [showPhoneNumberFormMap, setShowPhoneNumberFormMap] = useState({});
   const [contractorPhoneNumber, setContractorPhoneNumber] = useState('');
+  const [contractorJobRequests, setContractorJobRequests] = useState([]);
   const navigate = useNavigate();
 
+  const fetchContractorJobRequests = async () => {
+    // Logic to fetch contractor job requests from the server
+    // For example:
+    const response = await fetch('http://example.com/api/contractor-job-requests');
+    const data = await response.json();
+    return data;
+  };
+  useEffect(() => {
+    // Fetch and set job requests specific to the logged-in contractor
+    // This should be an API call to get job requests for the current contractor
+    fetchContractorJobRequests().then((jobRequests) => {
+        setContractorJobRequests(jobRequests);
+    });
+}, [currentUser, reloadData]);
   useEffect(() => {
     getWorkOrders().then((workOrderArray) => {
       setWorkOrders(workOrderArray);
     });
   }, [currentUser, reloadData]);
+  const handleCancelRequest = async (jobRequestId) => {
+    try {
+        const response = await fetch(`http://localhost:8000/job_requests/${jobRequestId}/cancel_request`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${currentUser.token}`,
+            },
+        });
+
+        if (!response.ok) {
+            console.error('Error response:', await response.text());
+            throw new Error('Failed to cancel the job request. Please try again.');
+        }
+
+        // Toggle the state to trigger a re-fetch
+        setReloadData((prev) => !prev);
+    } catch (error) {
+        console.error('Error canceling the job request:', error.message);
+        // Handle the error appropriately (e.g., show a notification to the user)
+    }
+};
+
   const handleRequestJob = (workOrderId) => {
-    // Show the phone number form
-    setShowPhoneNumberForm(true);
+    // Show the phone number form for the specific work order
+    setShowPhoneNumberFormMap((prev) => ({
+      ...prev,
+      [workOrderId]: true,
+    }));
   };
+
   const handleSubmitPhoneNumber = async (workOrderId) => {
     try {
       // Assuming you have a way to get the contractor's phone number
-      const contractorPhoneNumber = prompt(' Please enter your phone number:');
-  
+      // Validate or handle the phone number as needed
+      if (!contractorPhoneNumber.trim()) {
+        throw new Error('Please enter a valid phone number.');
+      }
+
       // Convert the phone number to an integer (assuming it's an integer field)
       const contractorPhoneNumberInt = parseInt(contractorPhoneNumber, 10);
-  
+
       const response = await fetch(`http://localhost:8000/job_requests/create_job_request`, {
         method: 'POST',
         headers: {
@@ -41,14 +85,19 @@ export const WorkOrderList = ({ currentUser }) => {
           contractor_cellphone: contractorPhoneNumberInt,
         }),
       });
-  
+
       if (!response.ok) {
         console.error('Error response:', await response.text());
         throw new Error('Failed to request the job. Please try again.');
       }
-  
+
       // Toggle the state to trigger a re-fetch
       setReloadData((prev) => !prev);
+      // Hide the phone number form for the specific work order
+      setShowPhoneNumberFormMap((prev) => ({
+        ...prev,
+        [workOrderId]: false,
+      }));
     } catch (error) {
       console.error('Error requesting the job:', error.message);
       // Handle the error appropriately (e.g., show a notification to the user)
@@ -108,7 +157,7 @@ export const WorkOrderList = ({ currentUser }) => {
                     />
                     {currentUser.rare_user.is_contractor && !workOrder.contractor && (
                       <div>
-                        {showPhoneNumberForm ? (
+                        {showPhoneNumberFormMap[workOrder.id] ? (
                           <div>
                             <input
                               type="text"
