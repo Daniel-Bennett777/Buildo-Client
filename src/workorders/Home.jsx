@@ -11,6 +11,7 @@ export const WorkOrderList = ({ currentUser }) => {
   const [showPhoneNumberFormMap, setShowPhoneNumberFormMap] = useState({});
   const [contractorPhoneNumber, setContractorPhoneNumber] = useState('');
   const [contractorJobRequests, setContractorJobRequests] = useState([]);
+  const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -158,14 +159,20 @@ export const WorkOrderList = ({ currentUser }) => {
                           <div>
                             <input
                               type="text"
-                              placeholder="Enter your phone number"
+                              placeholder="Please Enter your phone number"
                               value={contractorPhoneNumber}
                               onChange={(e) => setContractorPhoneNumber(e.target.value)}
+                  
+                            />
+                             <input
+                              type="file"
+                              onChange={(e) => setFile(e.target.files[0])}
                             />
                             <button
                               className="block mx-auto mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                               onClick={() => handleSubmitPhoneNumber(workOrder.id)}
                             >
+            
                               Request Job &nbsp;
                               <i className="fa-solid fa-hammer"></i>
                             </button>
