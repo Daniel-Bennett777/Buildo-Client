@@ -1,8 +1,9 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getWorkOrders } from "../managers/GetWorkOrders";
+
 import ".././Fonts/Fonts.css";
+import { fetchContractorJobRequests } from "../managers/GetContractorRequests";
 
 export const WorkOrderList = ({ currentUser }) => {
   const [workOrders, setWorkOrders] = useState([]);
@@ -12,25 +13,21 @@ export const WorkOrderList = ({ currentUser }) => {
   const [contractorJobRequests, setContractorJobRequests] = useState([]);
   const navigate = useNavigate();
 
-  const fetchContractorJobRequests = async () => {
-    // Logic to fetch contractor job requests from the server
-    // For example:
-    const response = await fetch('http://example.com/api/contractor-job-requests');
-    const data = await response.json();
-    return data;
-  };
   useEffect(() => {
     // Fetch and set job requests specific to the logged-in contractor
-    // This should be an API call to get job requests for the current contractor
     fetchContractorJobRequests().then((jobRequests) => {
         setContractorJobRequests(jobRequests);
+    }).catch((error) => {
+        console.error('Error fetching contractor job requests:', error);
     });
-}, [currentUser, reloadData]);
+  }, [currentUser, reloadData]);
+
   useEffect(() => {
     getWorkOrders().then((workOrderArray) => {
       setWorkOrders(workOrderArray);
     });
   }, [currentUser, reloadData]);
+
   const handleCancelRequest = async (jobRequestId) => {
     try {
         const response = await fetch(`http://localhost:8000/job_requests/${jobRequestId}/cancel_request`, {
@@ -52,7 +49,7 @@ export const WorkOrderList = ({ currentUser }) => {
         console.error('Error canceling the job request:', error.message);
         // Handle the error appropriately (e.g., show a notification to the user)
     }
-};
+  };
 
   const handleRequestJob = (workOrderId) => {
     // Show the phone number form for the specific work order
