@@ -25,7 +25,7 @@ export const getWorkOrders = () => {
       return Promise.reject("User or token not available.");
     }
   };
-export const createWorkOrder = (newWorkOrder) => {
+/*export const createWorkOrder = (newWorkOrder) => {
 const currentUser = JSON.parse(localStorage.getItem("current_user"));
 
 if (currentUser && currentUser.token) {
@@ -54,6 +54,39 @@ if (currentUser && currentUser.token) {
     return Promise.reject("User or token not available.");
 }
 };
+*/
+export const createWorkOrder = (newWorkOrder) => {
+  const currentUser = JSON.parse(localStorage.getItem("current_user"));
+
+  if (currentUser && currentUser.token) {
+    const url = "http://localhost:8000/work_orders";
+
+    const formData = new FormData();
+    for (const key in newWorkOrder) {
+      formData.append(key, newWorkOrder[key]);
+    }
+
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        Authorization: `Token ${currentUser.token}`,
+        // Note: Don't set 'Content-Type' header to let the browser set it as 'multipart/form-data'
+      },
+      body: formData, // Use FormData object
+    };
+
+    return fetch(url, requestOptions)
+      .then((response) => response.json())
+      .catch((error) => {
+        console.error("Error creating work order:", error);
+        throw error;
+      });
+  } else {
+    console.error("User or token not available.");
+    return Promise.reject("User or token not available.");
+  }
+};
+
 export const getWorkOrdersForCurrentUser = () => {
   const currentUser = JSON.parse(localStorage.getItem("current_user"));
 
