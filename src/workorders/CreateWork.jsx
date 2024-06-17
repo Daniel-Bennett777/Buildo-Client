@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+/*import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createWorkOrder } from "../managers/GetWorkOrders";
 import ".././Fonts/Fonts.css"
@@ -49,7 +49,8 @@ export const CreateWorkOrderForm = ({ currentUser }) => {
     <div className="mx-auto max-w-screen-md py-6">
       <h1 className="my-big-font text-orange-500 title text-center mb-6" style={{ fontSize: '2rem' }}>Create New Work Order</h1>
       <form onSubmit={handleSubmit}>
-        {/* Service Type */}
+        */
+       
         <div className="mb-4">
           <label htmlFor="serviceType" className="block text-md font-medium text-orange-500 mb-2">
             Service Type
