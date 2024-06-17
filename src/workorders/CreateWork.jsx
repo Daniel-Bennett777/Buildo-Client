@@ -112,7 +112,7 @@ export const CreateWorkOrderForm = ({ currentUser }) => {
           />
         </div>
 
-        {/* Profile Image URL */}
+        {/* this will be changed to use imagefield in backend Image URL */}
         <div className="mb-4">
           <label htmlFor="profileImageUrl" className="block text-md font-medium text-orange-500 mb-2">
             Upload Image
