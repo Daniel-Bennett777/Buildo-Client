@@ -14,7 +14,7 @@ export const About = () => {
           </p><br/>
           <p className='my-custom-font'> This application was built with the customer and contractor in mind. Establishing a 
           trustworthy connection can be difficult for both parties, but wouldn't it be nice to have an outlet where you can see all the 
-          options and experts at once?</p><br/>
+          options and experts at once? This is where Buildos can help! from handyman to home building.</p><br/>
           <p className='my-custom-font'>
             Feel free to explore the features and functionalities provided. If you have any questions or need
             assistance, don't hesitate to reach out to our support team.
