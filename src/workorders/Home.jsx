@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getWorkOrders } from "../managers/GetWorkOrders";
-
 import ".././Fonts/Fonts.css";
 import { fetchContractorJobRequests } from "../managers/GetContractorRequests";
 
@@ -15,12 +14,9 @@ export const WorkOrderList = ({ currentUser }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch and set job requests specific to the logged-in contractor
-    fetchContractorJobRequests().then((jobRequests) => {
-        setContractorJobRequests(jobRequests);
-    }).catch((error) => {
-        console.error('Error fetching contractor job requests:', error);
-    });
+    fetchContractorJobRequests()
+      .then((jobRequests) => setContractorJobRequests(jobRequests))
+      .catch((error) => console.error('Error fetching contractor job requests:', error));
   }, [currentUser, reloadData]);
 
   useEffect(() => {
@@ -31,29 +27,26 @@ export const WorkOrderList = ({ currentUser }) => {
 
   const handleCancelRequest = async (jobRequestId) => {
     try {
-        const response = await fetch(`http://localhost:8000/job_requests/${jobRequestId}/cancel_request`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Token ${currentUser.token}`,
-            },
-        });
+      const response = await fetch(`http://localhost:8000/job_requests/${jobRequestId}/cancel_request`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${currentUser.token}`,
+        },
+      });
 
-        if (!response.ok) {
-            console.error('Error response:', await response.text());
-            throw new Error('Failed to cancel the job request. Please try again.');
-        }
+      if (!response.ok) {
+        console.error('Error response:', await response.text());
+        throw new Error('Failed to cancel the job request. Please try again.');
+      }
 
-        // Toggle the state to trigger a re-fetch
-        setReloadData((prev) => !prev);
+      setReloadData((prev) => !prev);
     } catch (error) {
-        console.error('Error canceling the job request:', error.message);
-        // Handle the error appropriately (e.g., show a notification to the user)
+      console.error('Error canceling the job request:', error.message);
     }
   };
 
   const handleRequestJob = (workOrderId) => {
-    // Show the phone number form for the specific work order
     setShowPhoneNumberFormMap((prev) => ({
       ...prev,
       [workOrderId]: true,
@@ -62,13 +55,10 @@ export const WorkOrderList = ({ currentUser }) => {
 
   const handleSubmitPhoneNumber = async (workOrderId) => {
     try {
-      // Assuming you have a way to get the contractor's phone number
-      // Validate or handle the phone number as needed
       if (!contractorPhoneNumber.trim()) {
         throw new Error('Please enter a valid phone number.');
       }
 
-      // Convert the phone number to an integer (assuming it's an integer field)
       const contractorPhoneNumberInt = parseInt(contractorPhoneNumber, 10);
 
       const response = await fetch(`http://localhost:8000/job_requests/create_job_request`, {
@@ -79,7 +69,7 @@ export const WorkOrderList = ({ currentUser }) => {
         },
         body: JSON.stringify({
           work_order: workOrderId,
-          request_status: 1, // Assuming 1 corresponds to "Pending" in your backend
+          request_status: 1,
           contractor_cellphone: contractorPhoneNumberInt,
         }),
       });
@@ -89,33 +79,24 @@ export const WorkOrderList = ({ currentUser }) => {
         throw new Error('Failed to request the job. Please try again.');
       }
 
-      // Toggle the state to trigger a re-fetch
       setReloadData((prev) => !prev);
-      // Hide the phone number form for the specific work order
       setShowPhoneNumberFormMap((prev) => ({
         ...prev,
         [workOrderId]: false,
       }));
     } catch (error) {
       console.error('Error requesting the job:', error.message);
-      // Handle the error appropriately (e.g., show a notification to the user)
     }
   };
 
   return (
-    <div
-      className="min-h-screen bg-fixed bg-center bg-cover"
-      style={{ backgroundImage: 'url(/images/dark-concrete-texture-background.jpg)' }}
-    >
+    <div className="min-h-screen bg-fixed bg-center bg-cover" style={{ backgroundImage: 'url(/images/dark-concrete-texture-background.jpg)' }}>
       <div className="mx-auto max-w-screen-md w-full p-3">
         <div className="mb-10 flex justify-end">
           {!currentUser.rare_user.is_contractor && (
             <button
-              className=" mt-10 bg-gradient-to-b from-orange-500 to-orange-300 hover:from-orange-600 hover:to-orange-400 text-black font-bold py-3 px-6 rounded transform transition-transform duration-300 hover:scale-105"
-              onClick={() => {
-                // Add the logic to navigate to the "Add Post" page
-                navigate("/creatework");
-              }}
+              className="mt-10 bg-gradient-to-b from-orange-500 to-orange-300 hover:from-orange-600 hover:to-orange-400 text-black font-bold py-3 px-6 rounded transform transition-transform duration-300 hover:scale-105"
+              onClick={() => navigate("/creatework")}
             >
               Add Work Post &nbsp;
               <i className="fa-solid fa-pencil text-black"></i>
@@ -125,10 +106,7 @@ export const WorkOrderList = ({ currentUser }) => {
         <h1 className="mb-10 my-big-font title text-center text-orange-500" style={{ fontSize: '2rem' }}>All Work Orders</h1>
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {workOrders.map((workOrder) => (
-            <li
-              key={workOrder.id}
-              className="work-order--container border border-black rounded overflow-hidden bg-gray-300 shadow-md"
-            >
+            <li key={workOrder.id} className="work-order--container border border-black rounded overflow-hidden bg-gray-300 shadow-md">
               <div className="p-4">
                 <p className="my-custom-font text-sm">{workOrder.date_posted}</p>
                 <p className="my-big-font text-lg font-bold mb-2">{workOrder.service_type}</p>
@@ -144,12 +122,11 @@ export const WorkOrderList = ({ currentUser }) => {
                         <p className="my-custom-font">Contractors Qualifications: {workOrder.contractor.qualifications}</p>
                       </div>
                     )}
-                    {/* Additional content */}
                     <p className="my-custom-font">State: {workOrder.state_name}</p>
                     <p className="my-custom-font">County: {workOrder.county_name}</p>
                     <p className="my-custom-font">Description: {workOrder.description}</p>
                     <img
-                      src={workOrder.profile_image_url}
+                      src={`http://localhost:8000/media/${workOrder.profile_image}`} // Adjust the src to point to the correct field
                       alt={`Work Order ${workOrder.id}`}
                       className="w-full h-auto mt-4"
                     />
@@ -162,9 +139,8 @@ export const WorkOrderList = ({ currentUser }) => {
                               placeholder="Please Enter your phone number"
                               value={contractorPhoneNumber}
                               onChange={(e) => setContractorPhoneNumber(e.target.value)}
-                  
                             />
-                             <input
+                            <input
                               type="file"
                               onChange={(e) => setFile(e.target.files[0])}
                             />
@@ -172,7 +148,6 @@ export const WorkOrderList = ({ currentUser }) => {
                               className="block mx-auto mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                               onClick={() => handleSubmitPhoneNumber(workOrder.id)}
                             >
-            
                               Request Job &nbsp;
                               <i className="fa-solid fa-hammer"></i>
                             </button>
