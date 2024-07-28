@@ -136,7 +136,7 @@ export const WorkOrderList = ({ currentUser }) => {
                           <div>
                             <input
                               type="text"
-                              placeholder="Please Enter your phone number"
+                              placeholder="Please Enter your phone number here"
                               value={contractorPhoneNumber}
                               onChange={(e) => setContractorPhoneNumber(e.target.value)}
                             />
