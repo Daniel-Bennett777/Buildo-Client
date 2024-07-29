@@ -85,7 +85,7 @@ export const WorkOrderList = ({ currentUser }) => {
         [workOrderId]: false,
       }));
     } catch (error) {
-      console.error('Error requesting the job:', error.message);
+      console.error('Error requesting this job:', error.message);
     }
   };
 
