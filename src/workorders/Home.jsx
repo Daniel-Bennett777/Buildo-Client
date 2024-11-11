@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getWorkOrders } from "../managers/GetWorkOrders";
-import ".././Fonts/Fonts.css";
+import "../Fonts/Fonts.css";
 import { fetchContractorJobRequests } from "../managers/GetContractorRequests";
 
 export const WorkOrderList = ({ currentUser }) => {
@@ -13,18 +13,25 @@ export const WorkOrderList = ({ currentUser }) => {
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
+  // Fetch Contractor Job Requests
   useEffect(() => {
-    fetchContractorJobRequests()
-      .then((jobRequests) => setContractorJobRequests(jobRequests))
-      .catch((error) => console.error('Error fetching contractor job requests:', error));
+    if (currentUser && currentUser.token) {
+      fetchContractorJobRequests()
+        .then((jobRequests) => setContractorJobRequests(jobRequests))
+        .catch((error) => console.error('Error fetching contractor job requests:', error));
+    }
   }, [currentUser, reloadData]);
 
+  // Fetch Work Orders
   useEffect(() => {
-    getWorkOrders().then((workOrderArray) => {
-      setWorkOrders(workOrderArray);
-    });
+    if (currentUser && currentUser.token) {
+      getWorkOrders()
+        .then((workOrderArray) => setWorkOrders(workOrderArray))
+        .catch((error) => console.error('Error fetching work orders:', error));
+    }
   }, [currentUser, reloadData]);
 
+  // Cancel Job Request
   const handleCancelRequest = async (jobRequestId) => {
     try {
       const response = await fetch(`http://localhost:8000/job_requests/${jobRequestId}/cancel_request`, {
@@ -46,6 +53,7 @@ export const WorkOrderList = ({ currentUser }) => {
     }
   };
 
+  // Request Job
   const handleRequestJob = (workOrderId) => {
     setShowPhoneNumberFormMap((prev) => ({
       ...prev,
@@ -53,6 +61,7 @@ export const WorkOrderList = ({ currentUser }) => {
     }));
   };
 
+  // Submit Phone Number
   const handleSubmitPhoneNumber = async (workOrderId) => {
     try {
       if (!contractorPhoneNumber.trim()) {
@@ -93,7 +102,7 @@ export const WorkOrderList = ({ currentUser }) => {
     <div className="min-h-screen bg-fixed bg-center bg-cover" style={{ backgroundImage: 'url(/images/dark-concrete-texture-background.jpg)' }}>
       <div className="mx-auto max-w-screen-md w-full p-3">
         <div className="mb-10 flex justify-end">
-          {!currentUser.rare_user.is_contractor && (
+          {currentUser?.rare_user && !currentUser.rare_user.is_contractor && (
             <button
               className="mt-10 bg-gradient-to-b from-orange-500 to-orange-300 hover:from-orange-600 hover:to-orange-400 text-black font-bold py-3 px-6 rounded transform transition-transform duration-300 hover:scale-105"
               onClick={() => navigate("/creatework")}
@@ -126,11 +135,11 @@ export const WorkOrderList = ({ currentUser }) => {
                     <p className="my-custom-font">County: {workOrder.county_name}</p>
                     <p className="my-custom-font">Description: {workOrder.description}</p>
                     <img
-                      src={`http://localhost:8000/media/${workOrder.profile_image}`} // Adjust the src to point to the correct field
+                      src={`http://localhost:8000/media/${workOrder.profile_image}`} // Ensure this points to correct field in your API
                       alt={`Work Order ${workOrder.id}`}
                       className="w-full h-auto mt-4"
                     />
-                    {currentUser.rare_user.is_contractor && !workOrder.contractor && (
+                    {currentUser?.rare_user?.is_contractor && !workOrder.contractor && (
                       <div>
                         {showPhoneNumberFormMap[workOrder.id] ? (
                           <div>
